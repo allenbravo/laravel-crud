@@ -1,4 +1,13 @@
+import { useState, useEffect } from 'react'
+import { getFeatures } from '../api/featureApi'
+
 export default function Home() {
+  const [features, setFeatures] = useState([])
+
+  useEffect(() => {
+    getFeatures().then(res => setFeatures(res.data))
+  }, [])
+
   return (
     <>
       {/* HERO */}
@@ -92,7 +101,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FEATURES */}
+      {/* WHY CHOOSE US */}
       <section className="py-24">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -121,6 +130,41 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* FEATURES FROM DATABASE */}
+      {features.length > 0 && (
+        <section className="py-24 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-4 text-center">
+            <span className="text-blue-600 font-semibold uppercase text-sm tracking-wider">WHAT WE OFFER</span>
+            <h2 className="text-4xl font-bold text-gray-900 mt-4 mb-12">Our Features</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {features.map((feature) => (
+                <div key={feature.id}
+                  style={{ backgroundColor: 'white', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.08)', transition: 'transform 0.2s', textAlign: 'left' }}
+                  onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-4px)'}
+                  onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}>
+                  <div style={{ height: '200px', backgroundColor: '#f0ebe5', overflow: 'hidden' }}>
+                    {feature.image_url ? (
+                      <img src={feature.image_url} alt={feature.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    ) : (
+                      <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '40px', color: '#ccc' }}>🖼️</div>
+                    )}
+                  </div>
+                  <div style={{ padding: '20px' }}>
+                    <h3 style={{ fontSize: '17px', fontWeight: '700', color: '#1a1a2e', marginBottom: '8px' }}>{feature.title}</h3>
+                    <span style={{ display: 'inline-block', fontSize: '11px', fontWeight: '700', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#c47d0e', backgroundColor: 'rgba(240,160,68,0.15)', border: '1px solid rgba(240,160,68,0.35)', padding: '3px 12px', borderRadius: '20px', marginBottom: '10px' }}>
+                      {feature.category?.name}
+                    </span>
+                    <p style={{ fontSize: '14px', color: '#777', lineHeight: '1.6', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                      {feature.description || ''}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* TEAM */}
       <section className="py-24 bg-gray-100">
