@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { getFeatures } from '../api/featureApi'
 
-export default function Home() {
+export default function Home({ onViewFeature }) {
   const [features, setFeatures] = useState([])
 
   useEffect(() => {
@@ -140,7 +140,8 @@ export default function Home() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {features.map((feature) => (
                 <div key={feature.id}
-                  style={{ backgroundColor: 'white', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.08)', transition: 'transform 0.2s', textAlign: 'left' }}
+                  onClick={() => onViewFeature(feature)}
+                  style={{ backgroundColor: 'white', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 2px 8px rgba(0,0,0,0.08)', transition: 'transform 0.2s', textAlign: 'left', cursor: 'pointer' }}
                   onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-4px)'}
                   onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}>
                   <div style={{ height: '200px', backgroundColor: '#f0ebe5', overflow: 'hidden' }}>
